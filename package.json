@@ -1,0 +1,15 @@
+{
+  "name": "koreanstylepoker",
+  "version": "0.0.1",
+  "description": "it is korean Style Poker game",
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^1.7.3"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
+}

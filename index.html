@@ -1,0 +1,2095 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>IO Chat</title>
+  <script src="/socket.io/socket.io.js"></script>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <style>
+    body {
+      margin-top: 30px;
+    }
+
+    #messageArea {
+      display: none;
+    }
+
+    #myCardBigArea2 {
+      display: none;
+    }
+
+
+
+    .mLeftDPface {
+      width: 100px;
+      height: auto;
+    }
+
+
+    .bettingButtonArea {
+      margin-left: -10px;
+      margin-top: 10px;
+    }
+
+    .cardBox {
+      margin: 0;
+      position: relative;
+    }
+
+
+
+    .pcAHead {
+      position: absolute;
+      top: 8px;
+      left: 61px;
+    }
+
+    .pcACard1 {
+      /*두장시 왼쪽 뒷장*/
+      position: absolute;
+      top: 72px;
+      left: 57px;
+    }
+
+
+    .pcACard2 {
+      /*두장 오른쪽 뒷장*/
+      position: absolute;
+      top: 72px;
+      left: 126px;
+    }
+
+    .pcACard3 {
+      /*한장시 카드 뒷장*/
+      position: absolute;
+      top: 72px;
+      left: 89px;
+    }
+
+    .pcAHands {
+      /*두장뒷장시 다른 플레이어 영역 원숭이손*/
+      position: absolute;
+      top: 105px;
+      left: 49px;
+    }
+
+    .pcAHands2 {
+      /*한장뒷장시 다른 플레이어 영역 원숭이손*/
+      position: absolute;
+      top: 105px;
+      left: 80px;
+    }
+
+    body {
+     background: #3d516b;
+  }
+
+
+
+
+
+
+
+
+    #CardArea1 {
+      display: inline;
+
+    }
+
+    #CardArea2 {
+      display: inline;
+    }
+
+
+
+    .myMonkey {
+      /*내 카드영역 왼쪽 원숭이*/
+      background-image: url(img/myM.png);
+      background-size: 80px auto;
+      background-repeat: no-repeat;
+      background-position: 10px top;
+      margin-top: 60px;
+
+    }
+
+    .mLeftDP_MyUsername {
+      /*내카드영역 왼쪽 내 유저이름*/
+      margin-left: auto;
+      padding-left: 10px;
+      margin-top: 0px;
+      color: green;
+      font-size: 15px;
+    }
+
+
+    .chatDiv {
+      height: 200px;
+    }
+
+    .btnBetting {
+      width: 100%;
+      height: auto;
+    }
+
+
+    .dotBorder {
+      border: thick dotted #f44336;
+    }
+
+    .bgM {
+      width: 1080px;
+      height: 610px;
+      background-image: url('/img/bgM.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+
+    .bgPA {
+      padding-top: 11px;
+      width: 1080px;
+      height: 400px;
+    }
+
+    .bgMA {
+      /*내영역*/
+      margin-top: 8px;
+      width: 1080px;
+      height: 200px;
+    }
+
+    .btnP {
+      background-color: transparent;
+      background-repeat: no-repeat;
+      border: 0;
+    }
+
+    .btnSize {
+      width: 65px;
+      height: 65px;
+    }
+
+    .bgdieMonkey {
+      width: 100%;
+      height: auto;
+      background-image: url('/img/dieM.png');
+      background-size: 80px auto;
+      background-repeat: no-repeat;
+      background-position: center top;
+      margin-top: 20px;
+    }
+
+    .myCardMonkey {
+      width: 100%;
+      height: auto;
+      background-image: url('/img/myM.png');
+      background-size: 80px auto;
+      background-repeat: no-repeat;
+      background-position: center top;
+      margin-top: 20px;
+    }
+
+    .myCardMonkeyHands {
+      /*카드한장일때 내영역 원숭이손!*/
+      width: 360px;
+      height: 200px;
+      background-image: url('/img/myMH.png');
+      background-size: 126px auto;
+      background-repeat: no-repeat;
+      background-position: center 96px;
+    }
+
+
+
+    .myCardMonkeyHands2 {
+      /*두장일때 내영역 원숭이손!*/
+      width: 360px;
+      height: 200px;
+      background-image: url('/img/myMH3.png');
+      background-size: 200px auto;
+      background-repeat: no-repeat;
+      background-position: center 92px;
+    }
+
+
+
+    .img_center_myCard {
+      /*내영역 카드한장일때*/
+      width: 100%;
+      height: 100%;
+      margin-top: 38px;
+      margin-left: auto;
+      background-size: 70px 110px;
+      background-repeat: no-repeat;
+      background-position: center top;
+    }
+
+    .img_center_myCard2 {
+      /*내영역 카드두장일때 왼쪽카드*/
+      width: 70px;
+      height: 120px;
+      margin-top: 35px;
+      margin-left: -82px;
+      background-size: 70px 110px;
+      background-repeat: no-repeat;
+      background-position: center top;
+    }
+
+
+    .img_center_myCard3 {
+      /*내영역 카드두장일때 오른쪽카드*/
+      width: 70px;
+      height: 120px;
+      margin-top: -110px;
+      margin-left: 85px;
+      background-size: 70px 110px;
+      background-repeat: no-repeat;
+      background-position: right top;
+    }
+
+
+
+
+
+
+    .img_center_myHand {
+      /*카드한장일때 내영역 원숭이손가락!*/
+      width: 85px;
+      height: auto;
+      margin-top: 84px;
+      margin-left: auto;
+    }
+
+    .img_center_myHand2 {
+      /*카드두장일때 내영역 원숭이손가락!*/
+      width: 170px;
+      height: auto;
+      margin-top: 82px;
+      margin-left: -8px;
+    }
+
+
+    .bananaArea {
+      height: 300px;
+      width: auto;
+    }
+
+
+
+    .bettingValueArea {
+      height: 100px;
+      width: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="">
+    <!--------------------------------------------->
+
+    <div id="userFormArea" class="row">
+      <div class="col-md-12">
+        <form class="" id="userForm">
+          <div class="form-group">
+            <label for="">Enter Username</label>
+            <input class="form-control" id="username">
+            <br>
+            <input type="submit" class="btn btn-primary" name="" value="Login">
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!--------------------------------------------->
+
+
+
+    <div id="messageArea" class="row ">
+
+
+
+      <center>
+        <!--MainRec start-->
+        <div class="MainRec bgM">
+
+          <!--채팅관련폼-->
+          <div class="row bgPA">
+
+
+            <!--채팅내역나오는부분-->
+            <div class="row col-12">
+              <div class=" col">
+                <div class="row" style="height:50%; width:auto; padding-top:10px; ">
+                  <div class=" col-4" id="user1Place">
+                    dd
+                  </div>
+
+                  <div class="col-8">
+                    <div class=" cardBox " id="DivCardShow1">
+
+                      <div class="pcAHead" id="pcAHead1">
+
+                      </div>
+                      <div class="pcACard1" id="p1card1">
+
+                      </div>
+                      <div class="pcACard2" id="p1card2">
+
+                      </div>
+                      <div class="pcACard3" id="p1card3">
+
+                      </div>
+                      <div class="pcAHands" id="pcAHands1">
+                      </div>
+                      <div class="pcAHands2" id="pcAHandsO1">
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+
+                <div class="row" style="height:50%; width:auto; margin-top:-17px;">
+                  <div class=" col-4" id="user2Place">
+                    dd
+                  </div>
+
+                  <div class="col-8">
+                    <div class=" cardBox " id="DivCardShow2">
+
+                      <div class="pcAHead" id="pcAHead2">
+
+                      </div>
+                      <div class="pcACard1" id="p2card1">
+
+
+
+                      </div>
+                      <div class="pcACard2" id="p2card2">
+                      </div>
+
+                      <div class="pcACard3" id="p2card3">
+
+                      </div>
+
+                      <div class="pcAHands" id="pcAHands2">
+                      </div>
+                      <div class="pcAHands2" id="pcAHandsO2">
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+              <!--플레이어 영역-->
+
+
+
+
+              <div class="col" id="">
+
+                <div class=" bananaArea">
+                  <div class="inbananaArea">
+
+                  </div>
+                </div>
+
+                <!--bettingValueArea-->
+                <div class=" bettingValueArea">
+                </div>
+              </div>
+              <!--바나나& 베팅금액-->
+
+
+              <div class=" col">
+
+                <div class="row" style="height:50%; width:auto; padding-top:10px; margin-left:-52px;">
+
+                  <div class="col-8">
+                    <div class="cardBox" id="DivCardShow3">
+                      <div class="pcAHead" id="pcAHead3">
+
+                      </div>
+                      <div class=" pcACard1" id="p3card1">
+
+
+                      </div>
+                      <div class=" pcACard2" id="p3card2">
+
+
+                      </div>
+
+                      <div class="pcACard3" id="p3card3">
+
+                      </div>
+
+                      <div class="pcAHands" id="pcAHands3">
+                      </div>
+                      <div class="pcAHands2" id="pcAHandsO3">
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="col-4" id="user3Place">
+                    dd
+                  </div>
+                </div>
+
+
+                <div class="row" style="height:50%; width:auto; margin-top:-17px; margin-left:-52px;">
+
+                  <div class="col-8">
+                    <div class="cardBox" id="DivCardShow4">
+                      <div class="pcAHead" id="pcAHead4">
+
+                      </div>
+                      <div class=" pcACard1" id="p4card1">
+
+
+                      </div>
+                      <div class=" pcACard2" id="p4card2">
+
+
+                      </div>
+
+                      <div class="pcACard3" id="p4card3">
+
+                      </div>
+
+
+                      <div class="pcAHands" id="pcAHands4">
+                      </div>
+                      <div class="pcAHands2" id="pcAHandsO4">
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <div class=" col-4" id="user4Place">
+                    dd
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--end of chatContents-->
+
+
+          </div>
+          <!--end of chat-->
+
+
+
+
+
+          <div class=" ">
+            <!--총괄 제어 영역-->
+            <div id="CardControlImg" class="bgMA CardArea row">
+
+
+              <!--채팅출력창-->
+              <div class="col-3 chatDiv" style="overflow:auto;">
+                <div class="" id="showTurnP">
+
+                </div>
+                <div class=" chat" id="chat">
+                  <!--채팅내용이 출력되는부분-->
+                </div>
+              </div>
+              <!--end of output-->
+
+
+              <div class="col-1 " width="100%" height="auto" style="" id="mLeftDP">
+                <!--내화면 왼쪽디스플레이-->
+                <div class="mLeftDPface">
+
+                </div>
+                <div class="mLeftDPUN">
+
+                </div>
+                <div class="mLeftDPBV">
+                </div>
+              </div>
+
+
+
+              <div class="col-4 myCardMonkeyHands " id="myCardBigArea">
+                <div class="">
+
+                </div>
+              </div>
+
+
+              <div class="" id="dieMM">
+              </div>
+              <div class="col-4 myCardMonkeyHands2 " id="myCardBigArea2">
+
+                <div class="row">
+                  <div class="col-6 ">
+                    <div id="CardArea1" class="">
+                      <!--첫번째패-->mcard1
+                    </div>
+
+                  </div>
+
+                  <div class="col-6">
+                    <div id="CardArea2" class="">
+                      <!--두번째패-->mcard2
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-1" id="mRightDP">
+                <!--내화면 오른쪽디스플레이-->
+                <div class="">
+
+                </div>
+              </div>
+
+
+              <div class="col-3 bettingButtonArea">
+                <!--betting form-->
+                <!-- 배팅 관련 부분----------------------------------------------------------------------------------------->
+                <div class="" id="bettingButtonArea">
+
+
+                  <div class="row">
+                    <!--row1 start-->
+                    <!--콜 버튼 시작-->
+                    <!--콜: 앞사람(죽은 사람은 제외)이 베팅한 만큼의 돈을 걸고 판을 끝내기를 신청한다. 콜을 한 사람은 그 배팅 라운드에서 리레이즈 할 수 없다.-->
+                    <form class="col-4" id="CallForm">
+                      <div class="form-group callbtn">
+                        <input type="hidden" class="form-control" id="CallValue" value="1">
+                        <button type="submit" class="btnP btnBetting" onclick="playCall()" name="button"><img class="btnSize" src="./img/callbtn.png" alt=""></button>
+                        <audio src="./sound/call.mp3" id="callSound">
+                        </audio>
+                      </div>
+                    </form>
+                    <!--콜 버튼 끝-->
+
+
+                    <!--배경음악
+                    <audio autoplay loop src="./sound/bgm.mp3" id="Mainbgm">
+                    </audio>-->
+
+
+
+
+                    <!--삥 버튼 시작 -->
+                    <!--삥: 기본단위만큼을 베팅한다. 선을 잡은 사람에 한해 1장째, 또는 2장째 처음에 한해 가능.-->
+                    <form class="col-4" id="pingForm">
+                      <div class="form-group pingbtn">
+                        <input type="hidden" class="form-control" id="PunkValue" value="1">
+                        <button type="submit" class="btnP btnBetting" onclick="playPing()" name="button"><img class="btnSize" src="./img/pingbtn.png" alt=""></button>
+                        <audio src="./sound/ping.mp3" id="pingSound">
+                        </audio>
+
+                      </div>
+                    </form>
+                    <!--삥 버튼 끝-->
+
+
+
+
+                    <!--하프 버튼 시작 -->
+                    <!--하프: 깔린 돈의 50%를 베팅한다. 이하의 베팅은 콜로 취급되지 않는다.-->
+                    <form class="col-4" id="HalfForm">
+                      <div class="form-group">
+                        <input type="hidden" class="form-control" id="HalfValue" value="1">
+
+                        <button type="submit" class="btnP btnBetting" onclick="playHalf()" name="button"><img class="btnSize" src="./img/halfbtn.png" alt=""></button>
+                      </div>
+                      <audio src="./sound/half.m4a" id="halfSound">
+                      </audio>
+                    </form>
+                    <!--하프 버튼 끝-->
+
+
+                  </div>
+                  <!--end of row1-->
+
+
+
+                  <div class="row">
+                    <!--row2 start-->
+
+
+                    <!--다이 버튼 시작-->
+                    <!--다이: 지금까지 투자한 돈(맨 처음 놓은 돈 포함)을 포기하고 그 판의 게임에서 빠진다.-->
+                    <form class="col-4" id="DieForm">
+                      <div class="form-group">
+                        <input type="hidden" class="form-control" id="DieValue" value="1">
+                        <button type="submit" class="btnP btnBetting"  onclick="playDie()" name="button"><img class="btnSize" src="./img/diebtn.png" alt=""></button>
+                        <audio src="./sound/die.mp3" id="dieSound">
+                        </audio>
+
+                      </div>
+                    </form>
+                    <!--다이 버튼 끝-->
+
+
+
+
+
+                    <!--따당 버튼 시작 -->
+                    <!--따당: 앞사람이 건 돈의 2배를 베팅한다.-->
+                    <form class="col-4" id="DoubleForm">
+                      <div class="form-group doublebtn">
+                        <input type="hidden" class="form-control" id="DoubleValue" value="1">
+                        <button type="submit" class="btnP btnBetting" onclick="playDouble()" name="button"><img class="btnSize" src="./img/doublebtn.png" alt=""></button>
+                        <audio src="./sound/double.m4a" id="doubleSound">
+                        </audio>
+                      </div>
+                    </form>
+                    <!--따당 버튼 끝-->
+
+
+
+
+
+                    <!--쿼터 버튼 시작 -->
+                    <form class="col-4" id="quarterForm">
+                      <div class="form-group quarterbtn">
+                        <input type="hidden" class="form-control" id="quarterValue" value="1">
+                        <button type="submit" class="btnP btnBetting" onclick="playQuarter()" name="button"><img class="btnSize" src="./img/quarterbtn.png" alt=""></button>
+                        <audio src="./sound/quarter.m4a" id="quarterSound">
+                        </audio>
+
+                      </div>
+                    </form>
+                    <!--체크 버튼 끝-->
+
+                  </div>
+                  <!--end of row2-->
+                </div>
+                <!--end of betting contents-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </center>
+      <!--end of MainRec-->
+
+
+
+
+
+
+      <!--턴넘기기-->
+      <form class="col" id="TurnForm">
+        <div class="form-group">
+          <input type="hidden" class="form-control" id="TurnValue" value="1">
+
+          <input type="submit" class="btn btn-dark" name="" value="턴넘기기">
+        </div>
+      </form>
+      <!--턴넘기기 버튼 끝-->
+
+
+
+
+
+
+
+
+
+      <div class="row container" style="margin-left:auto; margin-right:auto;" id="mixForm">
+        <!--게임시작3천원버튼 시작-->
+        <form class="col"  id="mv1">
+          <div class="form-group">
+            <input type="submit" style="width:80%; padding-left:auto;"  class="btn btn-dark" onclick="playHandout()" name="" value="3천원">
+            <audio src="./sound/handout.mp3" id="handoutSound">
+            </audio>
+          </div>
+        </form>
+        <!--3만 버튼 끝-->
+
+
+
+        <!--게임시작3만원버튼 시작-->
+        <form class="col" id="mv2">
+          <div class="form-group ">
+            <input type="submit" style="width:80%"  class="btn btn-dark " onclick="playHandout()" name="" value="3만원">
+            <audio src="./sound/handout.mp3" id="handoutSound2">
+            </audio>
+          </div>
+        </form>
+        <!--3만 버튼 끝-->
+
+        <!--게임시작30만원버튼 시작-->
+        <form class="col" id="mv3">
+          <div class="form-group ">
+            <input type="submit" style="width:80%"  class="btn btn-dark " onclick="playHandout()" name="" value="30만원">
+            <audio src="./sound/handout.mp3" id="handoutSound3">
+            </audio>
+          </div>
+        </form>
+        <!--30만 버튼 끝-->
+      </div>
+
+
+
+
+
+
+
+
+
+      <!--채팅입력창-->
+      <div class="container">
+        <form class="" id="messageForm">
+          <div class="row form-group">
+            <textarea class="form-control col" id="message" placeholder="Enter Message"></textarea>
+            <button type="submit col" class="btn btn-primary" name="">Send Message</button>
+          </div>
+        </form>
+      </div>
+      <!--end of InputChat&Button-->
+
+
+
+
+
+
+
+
+
+      <!--다시시작버튼-->
+      <div class="row container" style="margin-left:auto; margin-right:auto;" id="goIndex">
+        <!--게임시작3천원버튼 시작-->
+        <form class="col"  id="mv4">
+          <div class="form-group">
+            <input type="submit" style="width:80%; padding-left:auto;"  class="btn btn-dark" onclick="playHandout()" name="" value="3천원">
+            <audio src="./sound/handout.mp3" id="handoutSound4">
+            </audio>
+          </div>
+        </form>
+        <!--3만 버튼 끝-->
+
+
+
+        <!--게임시작3만원버튼 시작-->
+        <form class="col" id="mv5">
+          <div class="form-group ">
+            <input type="submit" style="width:80%"  class="btn btn-dark " onclick="playHandout()" name="" value="3만원">
+            <audio src="./sound/handout.mp3" id="handoutSound5">
+            </audio>
+          </div>
+        </form>
+        <!--3만 버튼 끝-->
+
+        <!--게임시작30만원버튼 시작-->
+        <form class="col" id="mv6">
+          <div class="form-group ">
+            <input type="submit" style="width:80%"  class="btn btn-dark " onclick="playHandout()" name="" value="30만원">
+            <audio src="./sound/handout.mp3" id="handoutSound6">
+            </audio>
+          </div>
+        </form>
+
+
+        <button type="button"  name="button"  id="goMain">메인으로가기</button>
+        <!--30만 버튼 끝-->
+      </div>
+
+
+
+
+
+
+
+
+    </div>
+    <!--end of messageArea-->
+
+    <audio src="./sound/firstcall.mp3" id="firstcallSound">
+    </audio>
+
+
+
+  </div>
+  <!--end of body-->
+  <script>
+    $(function() {
+      var socket = io.connect();
+      var $messageForm = $('#messageForm');
+      var $message = $('#message');
+      var $chat = $('#chat');
+      var $messageArea = $('#messageArea');
+      var $userFormArea = $('#userFormArea');
+      var $userForm = $('#userForm');
+      var $users = $('#users');
+      var $username = $('#username');
+      var globalBettingV = null; //플레이어별 베팅금액 저장용
+      var reasonForRematch = ''; //재경기 이유
+
+
+      //-------------------
+      var $mixForm = $('#mixForm');
+
+      var MyUsername = null; //내 유저이름 전역변수
+
+      //---------------------이미지 관련===============================
+      var parseIntValue1 = '';
+      var parseIntValue2 = '';
+
+
+      var tempStartUserMem; //초기 유저멤버
+      var tempsocketIDUserList; //유저아뒤리스트
+      var checkCallMain = 0; //콜버튼 인덱스
+      var bettingValue = 0; //베팅 기준
+      var checkDieMemList = []; //다이 체크한멤버 아뒤 기록 배열임
+      checkDieMemList.length = 0;
+      var dataForCall = 0; //콜값 저장용
+      var Value1 = null; //카드첫번째값
+      var Value2 = null; //카드두번째값
+      var winner = null; //최후 승리자 인덱스
+      var gameSetCheck = null;
+      var checkPD = 0;  //핑과 따당 제어관련 처음레이즈단계시 비활성화 두번째 레이드단계에선 활성화
+
+
+      //playBGM(); //브금
+
+
+      $('#goIndex').hide();
+      $('#goMain').hide();
+
+      //------------------------------3천원 버튼을 누르면!-----------------------
+      $('#mv1').submit(function(e) {
+        e.preventDefault(); //submit버튼 클릭시 화면 refresh를 막아줌. (다른창으로 넘어가는것을 막아줌)
+
+        var tmv = 3000;
+        socket.emit('game start', tmv);  //베팅금액 서버로 전송
+
+        // 내 정보와 게임시작시 베팅금액을 서버로 보내줌
+        socket.emit('CheckUser name', {
+          socketClientID: socket.id, //클라이언트의 사용자 ID
+          bettingValue: tmv // 입력된 베팅금액
+        });
+
+      });
+
+
+
+
+      $('#mv2').submit(function(e) { //3만원보내기
+        e.preventDefault(); //submit버튼 클릭시 화면 refresh를 막아줌. (다른창으로 넘어가는것을 막아줌)
+
+        var tmv = 30000;
+        socket.emit('game start', tmv);  //베팅금액 서버로 전송
+
+        // 내 정보와 게임시작시 베팅금액을 서버로 보내줌
+        socket.emit('CheckUser name', {
+          socketClientID: socket.id, //클라이언트의 사용자 ID
+          bettingValue: tmv // 입력된 베팅금액
+        });
+
+      });
+
+
+      $('#mv3').submit(function(e) { //30만원보내기
+        e.preventDefault(); //submit버튼 클릭시 화면 refresh를 막아줌. (다른창으로 넘어가는것을 막아줌)
+
+        var tmv = 300000;
+        socket.emit('game start', tmv);  //베팅금액 서버로 전송
+
+        // 내 정보와 게임시작시 베팅금액을 서버로 보내줌
+        socket.emit('CheckUser name', {
+          socketClientID: socket.id, //클라이언트의 사용자 ID
+          bettingValue: tmv // 입력된 베팅금액
+        });
+
+      });
+
+
+
+
+
+
+
+      $('#mv4').submit(function(e) {
+        e.preventDefault(); //submit버튼 클릭시 화면 refresh를 막아줌. (다른창으로 넘어가는것을 막아줌)
+
+        var tmv = 3000;
+        socket.emit('game start', tmv);  //베팅금액 서버로 전송
+
+        // 내 정보와 게임시작시 베팅금액을 서버로 보내줌
+        socket.emit('CheckUser name', {
+          socketClientID: socket.id, //클라이언트의 사용자 ID
+          bettingValue: tmv // 입력된 베팅금액
+        });
+
+      });
+
+
+
+
+      $('#mv5').submit(function(e) { //3만원보내기
+        e.preventDefault(); //submit버튼 클릭시 화면 refresh를 막아줌. (다른창으로 넘어가는것을 막아줌)
+
+        var tmv = 30000;
+        socket.emit('game start', tmv);  //베팅금액 서버로 전송
+
+        // 내 정보와 게임시작시 베팅금액을 서버로 보내줌
+        socket.emit('CheckUser name', {
+          socketClientID: socket.id, //클라이언트의 사용자 ID
+          bettingValue: tmv // 입력된 베팅금액
+        });
+
+      });
+
+
+      $('#mv6').submit(function(e) { //30만원보내기
+        e.preventDefault(); //submit버튼 클릭시 화면 refresh를 막아줌. (다른창으로 넘어가는것을 막아줌)
+
+        var tmv = 300000;
+        socket.emit('game start', tmv);  //베팅금액 서버로 전송
+
+        // 내 정보와 게임시작시 베팅금액을 서버로 보내줌
+        socket.emit('CheckUser name', {
+          socketClientID: socket.id, //클라이언트의 사용자 ID
+          bettingValue: tmv // 입력된 베팅금액
+        });
+
+      });
+
+
+
+
+
+
+
+      socket.on('checkPDS', function(data) { //특정한 값이 왔을때 작동
+        checkPD=data;
+        //alert(data);
+        });
+
+
+
+
+
+
+
+
+
+      //-------------------------턴버튼 관련--------------------------------------------
+
+      $('#TurnForm').hide(); //평소에는turon butotton숨겨놓음
+      $('#bettingButtonArea').hide();
+
+      //턴버튼 컨트롤--- 특별한 값을 받았을때 TurnButton을 show한다
+
+
+
+
+
+      //-----------------------턴버튼 받기(서버에서 받기)---------------------
+      socket.on('firstTurn button', function(data) { //특정한 값이 왔을때 작동
+        tempStartUserMem = data.usersLength; //유저의 초기 길이
+        tempsocketIDUserList = data.socketIDList; //유저의 초기 아이디 리스트
+        checkCallMain = data.checkCall; //콜 인덱스 전달받음
+        bettingValue = data.bettingValue; //게임머니 전달받음
+        dataForCall = data.dataForCall; //콜비용값 저장
+
+        //카드버튼 제어관련
+
+
+
+        if(checkPD===1){
+          $('.callbtn').show();
+          $('.pingbtn').show();
+          $('.doublebtn').show();
+          $('.quarterbtn').show();
+        }else if(checkPD===2){
+          $('.callbtn').show();
+          $('.pingbtn').show();
+        }
+
+
+
+
+
+
+
+
+
+        //다이멤버가 추가됐을때 이벤트(플레이어 영역에 실시간 뿌려주기)
+        if ((!(checkDieMemList.length === data.checkDieMemList.length)) && (!(data.checkDieMemList[data.checkDieMemList.length - 1] === socket.id))) {
+
+          //data.checkDieMemList[data.checkDieMemList.length-1]
+          //alert(tempsocketIDUserList.indexOf(data.checkDieMemList[data.checkDieMemList.length-1]));
+          //tempsocketIDUserList.indexOf(data.checkDieMemList[data.checkDieMemList.length-1])
+          var tempI = tempsocketIDUserList.indexOf(data.checkDieMemList[data.checkDieMemList.length - 1]); //다이멤버 인덱스
+          var tempI2 = tempsocketIDUserList.indexOf(socket.id); //내아이디의 인덱스
+
+
+          if (tempI >= tempI2) {
+            tempI = tempI - 1;
+          }
+
+          tempI = tempI + 1;
+
+          var parseString = String(tempI);
+
+
+          $('#pcAHead' + parseString).html(`<img width="132px"  height="auto" src="./img/dieM.png" >`);
+
+
+        }
+
+
+
+        checkDieMemList = data.checkDieMemList; //다이멤버리스트 저장
+
+
+
+
+
+
+
+        //화면 정가운데 총 베팅금액 표시
+        var TempB = numberWithCommas(bettingValue); //천단위로 콤마 찍어주는 함수
+        $('.bettingValueArea').html(`<div class="" style="font-size:30px; margin-left:auto; margin-top:30px;"><strong > <span style=" color:red;">` + TempB +
+          `</span>  <span style="color:yellow;">개</string> </span></div>`); //card1,card2영억을 둘러싼 총영역
+
+
+
+          if(bettingValue<=250000){
+            $('.inbananaArea').html(`<img class="" style="width:200px; margin-left:auto; margin-top:150px; height:auto; " src="./banana/25.png" >`); //card1,card2영억을 둘러싼 총영역
+          }else if(bettingValue<=500000){
+            $('.inbananaArea').html(`<img class="" style="width:200px; margin-left:auto; margin-top:150px; height:auto; " src="./banana/50.png" >`); //card1,card2영억을 둘러싼 총영역
+          }else if(bettingValue<=750000){
+            $('.inbananaArea').html(`<img class="" style="width:200px; margin-left:auto; margin-top:130px; height:auto; " src="./banana/75.png" >`); //card1,card2영억을 둘러싼 총영역
+          }else if(bettingValue<=1000000){ //100만
+            $('.inbananaArea').html(`<img class="" style="width:200px; margin-left:auto; margin-top:130px; height:auto; " src="./banana/100.png" >`); //card1,card2영억을 둘러싼 총영역
+          }else if(bettingValue<=1250000){ //
+            $('.inbananaArea').html(`<img class="" style="width:200px; margin-left:auto; margin-top:150px; height:auto; " src="./banana/125.png" >`); //card1,card2영억을 둘러싼 총영역
+          }else if(bettingValue<=1500000){ //
+            $('.inbananaArea').html(`<img class="" style="width:200px; margin-left:auto; margin-top:150px; height:auto; " src="./banana/150.png" >`); //card1,card2영억을 둘러싼 총영역
+          }else if(bettingValue<=1750000){ //
+            $('.inbananaArea').html(`<img class="" style="width:200px; margin-left:auto; margin-top:150px; height:auto; " src="./banana/175.png" >`); //card1,card2영억을 둘러싼 총영역
+          }else if(bettingValue<=2000000){ //200만
+            $('.inbananaArea').html(`<img class="" style="width:200px; margin-left:auto; margin-top:150px; height:auto; " src="./banana/200.png" >`); //card1,card2영억을 둘러싼 총영역
+          }else if(bettingValue<=2250000){ //
+            $('.inbananaArea').html(`<img class="" style="width:200px; margin-left:auto; margin-top:150px; height:auto; " src="./banana/225.png" >`); //card1,card2영억을 둘러싼 총영역
+          }else if(bettingValue<=2500000){ //
+            $('.inbananaArea').html(`<img class="" style="width:200px; margin-left:auto; margin-top:150px; height:auto; " src="./banana/250.png" >`); //card1,card2영억을 둘러싼 총영역
+          }else if(bettingValue<=2750000){ //
+            $('.inbananaArea').html(`<img class="" style="width:200px; margin-left:auto; margin-top:100px; height:auto; " src="./banana/275.png" >`); //card1,card2영억을 둘러싼 총영역
+          }else{ //300만
+            $('.inbananaArea').html(`<img class="" style="width:280px; margin-left:auto; margin-top:80px;  height:auto; " src="./banana/300.png" >`); //card1,card2영억을 둘러싼 총영역
+          }
+
+
+          //bananaArea 바나나 표시영역
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //내 카드영역에 내가 현재 얼마나 베팅했는지 금액 표시
+        $('.mLeftDPBV').html(`<span style=" white-space:nowrap; color:yellow; margin-left:auto;"> <strong> ` +
+          numberWithCommas(globalBettingV[(globalBettingV.indexOf(socket.id)) + 1]) +
+          ` 개 베팅중</strong></span>`);
+
+
+
+
+
+
+        if (data) { //턴버튼이 작동하면 게임시작 버튼이 꺼지도록
+          $('#mixForm').hide(); // 게임시작버튼 누르면 사라지게 만듬 같은(위에랑같은말이다)
+          $('#goIndex').hide();
+        }
+
+
+        var indexTmsg;
+        indexTmsg = data.Turnmsg.indexOf(socket.id);
+
+
+
+
+
+
+        $('#showTurnP').html('<div class="well"><strong>' + users[ ( ( data.Turnmsg.indexOf('show')-1 ) / 2  ) ]  + '</strong> 님 차례입니다.</div>'); //id가 chat태그 하위 내용으로 이내용을 추가한다
+
+
+        indexTmsg++;
+        var TValue = data.Turnmsg[indexTmsg]; //내 버튼 상태를 체크
+
+
+
+        //내턴 식별자인 show가 있으면서 동시에 내 아이디가 다이리스트에 존재한다면
+        if (TValue === 'show' && data.checkDieMemList.indexOf(socket.id) >= 0) {
+
+
+
+          //턴을 넘기는 코딩해야함
+          socket.emit('turn button', {
+            socketIdC: socket.id, //현재 보내는 유저의 아이디
+            starterLength: tempStartUserMem, // 게임유저인원수
+            starterMemList: tempsocketIDUserList //게임유저아이디리스트
+          });
+        } else if (TValue === 'show') {
+
+
+
+
+          if(dataForCall===0 && checkPD===0){
+            $('.callbtn').hide();
+            $('.pingbtn').hide();
+            $('.doublebtn').hide();
+            $('.quarterbtn').hide();
+            checkPD=1;
+            socket.emit('checkPDC', checkPD);
+
+          }else if(dataForCall===0 && checkPD===1){
+            $('.callbtn').hide();
+            $('.pingbtn').hide();
+            checkPD=2;
+            socket.emit('checkPDC', checkPD);
+          }
+
+
+
+
+          $('#bettingButtonArea').show(); //턴넘기기 버튼이 활성화될때 같이 작동하게 하기위해서
+        }
+
+
+
+      });
+      //-----------------------턴버튼 받기 끝(서버에서 받기)---------------------
+
+
+
+
+
+
+
+
+
+      //-----------------턴버튼 서버로 보내기--------------------
+
+      $('#TurnForm').submit(function(e) { // 보내는거 !!!!!!폼에서 메세지 내용을 가져옴
+        e.preventDefault(); //submit후 화면 refresh를 막음 //원래 함수자체기능은 함수의 기능을 막아버리는것
+        $('#TurnForm').hide(); //턴넘기기 버튼클릭시 다시 숨기기
+        $('#bettingButtonArea').hide(); //턴넘기기 클릭시 다시 숨기기
+
+
+        //유저정보를 서버쪽으로보내서 다음턴을 지정할수있음  (턴넘기기 버튼활성화를 위한 실질적인 시작점)
+        socket.emit('turn button', {
+          socketIdC: socket.id, //현재 보내는 유저의 아이디
+          starterLength: tempStartUserMem, // 게임유저인원수
+          starterMemList: tempsocketIDUserList //게임유저아이디리스트
+        });
+      });
+
+      //-----------------------턴버튼 서버로 보내기 끝----------------------------------------
+
+
+
+
+
+
+
+
+
+      //---------------call버튼 시작 (서버로 보내기)-----------------------------------------
+      $('#CallForm').submit(function(e) { // 보내는거 !!!!!!폼에서 메세지 내용을 가져옴
+        e.preventDefault(); //submit후 화면 refresh를 막음 //원래 함수자체기능은 함수의 기능을 막아버리는것
+        $('#TurnForm').hide(); //턴넘기기 버튼클릭시 다시 숨기기
+        $('#bettingButtonArea').hide(); //턴넘기기 클릭시 다시 숨기기
+
+        //checkCallMain += 1; // 콜버튼을 클릭시 해당 인덱스를 보냄(call 증가)
+
+
+        //bettingValue +=  배팅금액 콜버튼은 맨처음에 사용할수없다. 죽은사람제외 앞턴의 베팅금액을 그대로 유지
+
+        //유저정보를 서버쪽으로보내서 다음턴을 지정할수있음  (턴넘기기 버튼활성화를 위한 실질적인 시작점)
+        socket.emit('call button', {
+          socketIdC: socket.id, //현재 보내는 유저의 아이디
+          starterLength: tempStartUserMem, // 게임유저인원수
+          starterMemList: tempsocketIDUserList, //게임유저아이디리스트
+          checkCall: checkCallMain, //콜버튼 클릭시 인덱스를 보내서 스택쌓음
+          bettingValue: bettingValue //베팅금액 전송 아직 지정안됨
+
+        });
+      });
+
+      //-------------------------------call버튼 끝-------------------------------------
+
+
+
+
+
+
+
+
+
+      //따당: 앞사람이 건 돈의 2배를 베팅한다.
+      //---------------따당 버튼 시작 (서버로 보내기)-----------------------------------------
+      $('#DoubleForm').submit(function(e) { // 보내는거 !!!!!!폼에서 메세지 내용을 가져옴
+        e.preventDefault(); //submit후 화면 refresh를 막음 //원래 함수자체기능은 함수의 기능을 막아버리는것
+        $('#TurnForm').hide(); //턴넘기기 버튼클릭시 다시 숨기기
+        $('#bettingButtonArea').hide(); //턴넘기기 클릭시 다시 숨기기
+
+        //checkCallMain += 1; // 콜버튼을 클릭시 해당 인덱스를 보냄(call 증가)
+
+
+        //bettingValue +=  배팅금액 콜버튼은 맨처음에 사용할수없다. 죽은사람제외 앞턴의 베팅금액을 그대로 유지
+
+        //유저정보를 서버쪽으로보내서 다음턴을 지정할수있음  (턴넘기기 버튼활성화를 위한 실질적인 시작점)
+        socket.emit('double button', {
+          socketIdC: socket.id, //현재 보내는 유저의 아이디
+          starterLength: tempStartUserMem, // 게임유저인원수
+          starterMemList: tempsocketIDUserList, //게임유저아이디리스트
+          checkCall: checkCallMain, //콜버튼 클릭시 인덱스를 보내서 스택쌓음
+          bettingValue: bettingValue //베팅금액 전송 아직 지정안됨
+
+        });
+      });
+
+      //-------------------------------따당버튼 끝-------------------------------------
+
+
+
+
+
+
+
+
+      //하프: 깔린 돈의 50%를 베팅한다. 이하의 베팅은 콜로 취급되지 않는다.
+      //---------------하프버튼 시작 (서버로 보내기)-----------------------------------------
+      $('#HalfForm').submit(function(e) { // 보내는거 !!!!!!폼에서 메세지 내용을 가져옴
+        e.preventDefault(); //submit후 화면 refresh를 막음 //원래 함수자체기능은 함수의 기능을 막아버리는것
+        $('#TurnForm').hide(); //턴넘기기 버튼클릭시 다시 숨기기
+        $('#bettingButtonArea').hide(); //턴넘기기 클릭시 다시 숨기기
+
+        //checkCallMain += 1; // 콜버튼을 클릭시 해당 인덱스를 보냄(call 증가)
+
+
+        //bettingValue +=
+        //globalBettingV
+
+        //유저정보를 서버쪽으로보내서 다음턴을 지정할수있음  (턴넘기기 버튼활성화를 위한 실질적인 시작점)
+        socket.emit('half button', {
+          socketIdC: socket.id, //현재 보내는 유저의 아이디
+          starterLength: tempStartUserMem, // 게임유저인원수
+          starterMemList: tempsocketIDUserList, //게임유저아이디리스트
+          checkCall: checkCallMain, //콜버튼 클릭시 인덱스를 보내서 스택쌓음
+          bettingValue: bettingValue //베팅금액 전송 아직 지정안됨
+
+        });
+      });
+      //-------------------------------하프 버튼 끝-------------------------------------
+
+
+
+
+
+
+
+
+
+      //---------------다이 버튼 시작 (서버로 보내기)-----------------------------------------
+      $('#DieForm').submit(function(e) { // 보내는거 !!!!!!폼에서 메세지 내용을 가져옴
+        e.preventDefault(); //submit후 화면 refresh를 막음 //원래 함수자체기능은 함수의 기능을 막아버리는것
+        $('#TurnForm').hide(); //턴넘기기 버튼클릭시 다시 숨기기
+        $('#bettingButtonArea').hide(); //턴넘기기 클릭시 다시 숨기기
+
+        $('.mLeftDPface').html(`<img class="" style="width:80px; margin-left:auto; height:auto; padding-top:59px" src="./img/dieM.png" >`);
+
+        $('.myCardMonkeyHands2').hide();
+        $('#dieMM').html('<span style="margin-left:auto; color:red; font-size:30px;">DIE</span>');
+
+
+
+        //checkCallMain += 1; // 콜버튼을 클릭시 해당 인덱스를 보냄(call 증가)
+
+
+        //bettingValue +=
+
+
+
+        //유저정보를 서버쪽으로보내서 다음턴을 지정할수있음  (턴넘기기 버튼활성화를 위한 실질적인 시작점)
+        socket.emit('die button', {
+          socketIdC: socket.id, //현재 보내는 유저의 아이디
+          starterLength: tempStartUserMem, // 게임유저인원수
+          starterMemList: tempsocketIDUserList, //게임유저아이디리스트
+          checkCall: checkCallMain, //콜버튼 클릭시 인덱스를 보내서 스택쌓음
+          bettingValue: bettingValue //베팅금액 전송 아직 지정안됨
+          //checkDieMemList: checkDieMemList  //다이멤버 전달
+        });
+      });
+      //-------------------------------다이 버튼 끝-------------------------------------
+
+
+
+
+
+
+
+
+
+      //쿼터: 깔린 돈의 25%를 베팅한다.
+      //-----------------쿼터 버튼 시작-----------------------------
+      $('#quarterForm').submit(function(e) { // 보내는거 !!!!!!폼에서 메세지 내용을 가져옴
+        e.preventDefault(); //submit후 화면 refresh를 막음 //원래 함수자체기능은 함수의 기능을 막아버리는것
+        $('#TurnForm').hide(); //턴넘기기 버튼클릭시 다시 숨기기
+        $('#bettingButtonArea').hide(); //턴넘기기 클릭시 다시 숨기기
+
+        //checkCallMain += 1; // 콜버튼을 클릭시 해당 인덱스를 보냄(call 증가)
+
+
+        //bettingValue +=
+
+        //유저정보를 서버쪽으로보내서 다음턴을 지정할수있음  (턴넘기기 버튼활성화를 위한 실질적인 시작점)
+        socket.emit('quarter button', {
+          socketIdC: socket.id, //현재 보내는 유저의 아이디
+          starterLength: tempStartUserMem, // 게임유저인원수
+          starterMemList: tempsocketIDUserList, //게임유저아이디리스트
+          checkCall: checkCallMain, //콜버튼 클릭시 인덱스를 보내서 스택쌓음
+          bettingValue: bettingValue //베팅금액 전송 아직 지정안됨
+
+        });
+      });
+      //----------쿼터 버튼 끝---------------------------quarterForm
+
+
+
+
+
+
+
+
+
+      //삥: 기본단위만큼을 베팅한다. 선을 잡은 사람에 한해 1장째, 또는 2장째 처음에 한해 가능.
+      //-----------------삥 버튼 시작-----------------------------
+
+
+      $('#pingForm').submit(function(e) { // 보내는거 !!!!!!폼에서 메세지 내용을 가져옴
+        e.preventDefault(); //submit후 화면 refresh를 막음 //원래 함수자체기능은 함수의 기능을 막아버리는것
+        $('#TurnForm').hide(); //턴넘기기 버튼클릭시 다시 숨기기
+        $('#bettingButtonArea').hide(); //턴넘기기 클릭시 다시 숨기기
+
+
+        //checkCallMain += 1; // 콜버튼을 클릭시 해당 인덱스를 보냄(call 증가)
+
+
+        //bettingValue +=
+
+        //유저정보를 서버쪽으로보내서 다음턴을 지정할수있음  (턴넘기기 버튼활성화를 위한 실질적인 시작점)
+        socket.emit('ping button', {
+          socketIdC: socket.id, //현재 보내는 유저의 아이디
+          starterLength: tempStartUserMem, // 게임유저인원수
+          starterMemList: tempsocketIDUserList, //게임유저아이디리스트
+          checkCall: checkCallMain, //콜버튼 클릭시 인덱스를 보내서 스택쌓음
+          bettingValue: bettingValue //베팅금액 전송 아직 지정안됨
+        });
+      });
+      //----------삥 버튼 끝---------------------------quarterForm
+
+
+
+      //------------------------------------
+      socket.on('again message', function(data) { //특정한 값이 왔을때 작동
+        arrData = data.socketIDnCardnum;
+        randomValue = data.randomValue; //랜덤값 전체 배열 받기
+        globalBettingV = data.globalBettingV; //플레이어별 베팅 금액
+        reasonForRematch = data.reasonForRematch;
+
+      });
+
+      //----------------------------------
+
+
+
+      socket.on('some otherV', function(data) { //특정한 값이 왔을때 작동
+        globalBettingV = data.globalBettingV;
+      });
+
+
+
+      //--------------첫번째 콜 이벤트 발생시 두번째 카드 뒷면 공개----------------------------------------------
+      socket.on('firstCall showSecondcard', function(data) { //특정한 값이 왔을때 작동
+        tempStartUserMem = data.usersLength; //유저의 초기 길이
+        tempsocketIDUserList = data.socketIDList; //유저의 초기 아이디 리스트
+        checkCallMain = data.checkCall; //콜버튼 클릭시 인덱스를 보내서 스택쌓음
+        bettingValue = data.bettingValue; //베팅금액 전송 아직 지정안됨
+        checkDieMemList = data.checkDieMemList; //다이멤버
+        dataForCall = data.dataForCall; //call을위한 데이터
+
+
+
+
+        if(dataForCall===0 && checkPD===1){
+          $('.callbtn').hide();
+          $('.pingbtn').hide();
+          socket.emit('checkPDC', checkPD);
+        }else if(dataForCall===0 && checkPD===2){
+          $('.callbtn').hide();
+          $('.pingbtn').hide();
+          socket.emit('checkPDC', checkPD);
+        }
+
+
+
+
+
+
+
+        playFirstcall();
+
+
+        $('.pcACard1').show();
+        $('.pcACard2').show();
+        $('.pcAHands').show();
+
+
+
+
+        $('#CardArea2').show(); //내 카드패 영역의 두번째 패를 보여줌.
+
+
+        if (reasonForRematch === "멍구사") {
+          alert('멍구사 재경기시작');
+
+
+        } else if (reasonForRematch === "구사") {
+          alert('구사 재경기시작');
+
+
+        } else if (reasonForRematch === "무승부") {
+          alert('무승부 재경기시작');
+          //돌아오기 222
+
+
+
+        }
+
+        $('.pcACard3').hide();
+        $('.pcAHands2').hide();
+
+
+
+
+
+
+
+        //--------------------------------------------------------------------
+
+        var cheT = 0; //이변수를 가지고 내카드영역을 다른사람패에 안보여줌
+        for (var i = 0; i < data.usersLength; i++) { // 첫번째 이벤트에서 두번째 뒷패를 표시함(다이멤버 제외)
+
+          if (checkDieMemList.indexOf(tempsocketIDUserList[i]) >= 0) { //다이멤버중 해당턴이 존재한다면 스킵
+
+            if ((tempsocketIDUserList[i] === socket.id)) { //내가 만약 다이라면 그중에서또 내가 중복된다면 스킵
+              cheT += 1;
+              continue;
+            }
+            continue; //아마도 여기에다 다이멤버의 상태를 표시하면 될듯!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+          } else if (tempsocketIDUserList[i] === socket.id) {
+            //여기는 내카드는 다른사람패 영역에 안보여주기 위해서
+            cheT += 1;
+            continue;
+          } else {
+
+
+
+            var tempI = i + 1 - cheT;
+
+            var parseString = String(tempI);
+
+
+            $('#pcAHead' + parseString).html(`<img width="132px"  height="auto" src="./img/Mface1.png" >`);
+
+            $('#p' + parseString + 'card1').html(`<img width="70px"  height="110px" src="CardBack.png" >`);
+
+            $('#p' + parseString + 'card2').html(`<img width="70px"  height="110px" src="CardBack.png" >`);
+
+            $('#pcAHands' + parseString).html(`<img width="154px"  height="auto" src="./img/pcAHands.png" >`);
+
+
+          }
+        }
+
+        //---------------------------------------------------------------
+
+
+
+
+
+
+        //----------------------내카드패 영역 공개하는 부분----------------------------------
+        var index = arrData.indexOf(socket.id); //키값으로 배열의 위치를 찾아서 index기준을 찾아냄
+        index++;
+        Value1 = arrData[index]; //첫번째 내가 받아야할 패의 첫번째 번호(카드)
+        index++;
+        Value2 = arrData[index]; //첫번째 내가 받아야할 패의 두번째 번호(카드)
+        //id가 chat태그 하위 내용으로 이내용을 추가한다
+
+
+        //-----이미지 제어를위해 형변환 시켜줌
+
+        parseIntValue1 = parseInt(Value1); //전역변수
+        parseIntValue2 = parseInt(Value2); //전역변수
+
+
+        $('#myCardBigArea').hide(); // 첫번째 콜 작동시 첫번째 손모양  사라지게 만듬
+        $('#myCardBigArea2').show(); // 첫번째 콜 작동시 두번째 손모양  나타나게 만듬
+
+
+
+
+        //내카드패 2장 공개!!!!!!!!!!!!!!!!!!!!!!!!
+        //내턴 식별자인 show가 있으면서 동시에 내 아이디가 다이리스트에 존재한다면
+        if (checkDieMemList.indexOf(socket.id) >= 0) {
+          //alert('작동여부 다이입니다.');
+
+          $('.myCardMonkeyHands2').hide();
+          $('#dieMM').html('<span style="margin-left:auto; color:red; font-size:30px;">DIE</span>');
+
+
+          return;
+        }
+
+        $('#myCardBigArea2').html(`<div class="img_center_myCard2"  style="background-image: url(` + parseIntValue1 + `.jpg); ">
+        <img class="img_center_myHand2" src="./img/myMH4.png" >
+
+        <div class="img_center_myCard3"  style="background-image: url(` + parseIntValue2 + `.jpg); ">
+        `);
+
+
+
+
+
+        //------------------------------- 카드표시!!!!!!
+        $('#CardArea1').html('<img width="40%" height="auto" src="' + (parseIntValue1) + '.jpg" >');
+
+
+
+
+        if (checkDieMemList.indexOf(socket.id) >= 0) {
+          $('#CardArea2').html('');
+        }
+
+
+
+        //-----------------------------------------------------------------------------
+
+        if (data) { //턴버튼이 작동하면 게임시작 버튼이 꺼지도록
+          $('#mixForm').hide(); // 게임시작버튼 누르면 사라지게 만듬 같은(위에랑같은말이다)
+          $('#goIndex').hide();
+        }
+
+
+        var indexTmsg;
+        indexTmsg = data.Turnmsg.indexOf(socket.id);
+        indexTmsg++;
+        var TValue = data.Turnmsg[indexTmsg]; //내 버튼 상태를 체크
+
+
+        if (TValue === 'show' && data.checkDieMemList.indexOf(socket.id) >= 0) {
+
+          //턴을 넘기는 코딩해야함
+          socket.emit('turn button', {
+            socketIdC: socket.id, //현재 보내는 유저의 아이디
+            starterLength: tempStartUserMem, // 게임유저인원수
+            starterMemList: tempsocketIDUserList //게임유저아이디리스트
+          });
+        } else if (TValue === 'show') {
+          //$('#TurnForm').show(); //값이 전달되면 show한다
+          $('#bettingButtonArea').show(); //턴넘기기 버튼이 활성화될때 같이 작동하게 하기위해서
+        }
+
+      });
+      //------------------------end of firstCall ShowEvent------
+
+
+
+
+
+
+
+
+
+
+      //--------------두번째 콜 이벤트 발생시 게임셋----------------------------------------------
+      //1.다른 플레이어 영역들 카드패 보여줘야함
+      socket.on('secondCall gameset', function(data) { //특정한 값이 왔을때 작동
+        tempStartUserMem = data.usersLength; //유저의 초기 길이
+        tempsocketIDUserList = data.socketIDList; //유저의 초기 아이디 리스트
+        checkCallMain = data.checkCall; //콜버튼 스택확인용
+        bettingValue = data.bettingValue; //총 베팅금액
+        checkDieMemList = data.checkDieMemList; //다이멤버
+        dataForCall = data.dataForCall; //콜비용
+
+        //--------------------------------------------------------------------
+
+        checkPD=0;
+        socket.emit('checkPDC', checkPD);
+
+        $('#dieMM').html('');
+
+        var cheT = 0; //이변수를 가지고 내카드영역을 다른사람패에 안보여줌
+
+        for (var i = 0; i < data.usersLength; i++) { // 첫번째 이벤트에서 두번째 뒷패를 표시함(다이멤버 제외)
+
+
+          if (checkDieMemList.indexOf(tempsocketIDUserList[i]) >= 0) { //다이멤버중 해당턴이 존재한다면 스킵
+
+            if ((tempsocketIDUserList[i] === socket.id)) { //내가 만약 다이라면 그중에서또 내가 중복된다면 스킵
+              cheT += 1;
+              continue;
+            } else {
+              var tempI = i + 1 - cheT;
+
+              var parseString = String(tempI);
+
+              $('#pcAHead' + parseString).html(`<img width="132px"  height="auto" src="./img/dieM.png" >`);
+
+            }
+            continue; //아마도 여기에다 다이멤버의 상태를 표시하면 될듯!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+          } else if (tempsocketIDUserList[i] === socket.id) {
+            //여기는 내카드는 다른사람패 영역에 안보여주기 위해서
+            cheT += 1;
+            continue;
+          } else {
+
+            var index = arrData.indexOf(tempsocketIDUserList[i]); //키값으로 배열의 위치를 찾아서 index기준을 찾아냄
+
+            index++;
+            Value1 = arrData[index]; //첫번째 내가 받아야할 패의 첫번째 번호(카드)
+            index++;
+            Value2 = arrData[index]; //첫번째 내가 받아야할 패의 두번째 번호(카드)
+            //id가 chat태그 하위 내용으로 이내용을 추가한다
+
+
+            var tempI = i + 1 - cheT;
+
+            var parseString = String(tempI);
+
+
+
+
+
+            $('#pcAHead' + parseString).html(`<img width="132px"  height="auto" src="./img/Mface1.png" >`);
+
+
+
+            $('#p' + parseString + 'card1').html(`<img width="70px"  height="110px" src="` + Value1 + `.jpg" >`);
+
+
+            $('#p' + parseString + 'card2').html(`<img width="70px"  height="110px" src="` + Value2 + `.jpg" >`);
+
+
+            $('#pcAHands' + parseString).html(`<img width="154px"  height="auto" src="./img/pcAHands.png" >`);
+
+
+          }
+        }
+        //---------------------------------------------------------------
+
+
+        if (data.winner === socket.id) {
+          alert(data.rnArr[tempsocketIDUserList.indexOf(socket.id)] + '승리 하였습니다'); //승리자에게 배팅금액을 몰아줌.
+
+          $('#goIndex').show();
+          $('#goMain').show();
+
+          return;
+
+        } else {
+          alert(data.rnArr[tempsocketIDUserList.indexOf(socket.id)] + '패배 하였습니다'); // 패배자는 소지금에서 배팅한 금액만큼 차감
+
+          //$('#mixForm').show(); // 승리다시
+          return;
+        }
+
+
+
+
+
+
+
+        var indexTmsg;
+        indexTmsg = data.Turnmsg.indexOf(socket.id);
+        indexTmsg++;
+        var TValue = data.Turnmsg[indexTmsg]; //내 버튼 상태를 체크
+
+        //내턴에 다이멤버라면 턴넘김
+        if (TValue === 'show' && data.checkDieMemList.indexOf(socket.id) >= 0) {
+          //턴을 넘기는 코딩해야함
+
+
+          socket.emit('turn button', {
+            socketIdC: socket.id, //현재 보내는 유저의 아이디
+            starterLength: tempStartUserMem, // 게임유저인원수
+            starterMemList: tempsocketIDUserList //게임유저아이디리스트
+          });
+
+
+
+
+          //내턴이라면
+        } else if (TValue === 'show') {
+          //$('#TurnForm').show(); //값이 전달되면 show한다
+          $('#bettingButtonArea').show(); //턴넘기기 버튼이 활성화될때 같이 작동하게 하기위해서
+        }
+
+
+
+      });
+      //-------------------------------------------------
+
+
+
+
+
+
+      var arrData; //소켓아이디1,카드번호1,카드번호2,소켓아이디2,카드번호1,카드번호2....이런식으로 받음
+      var randomValue; //랜덤값(각 플레이어들의 카드번호 받기) 위랑 같은데 카드번호만있음 쓸지말지 고민인 변수값
+      var username = [];  //초기 유저이름
+      username.length=0;
+
+
+
+
+
+      //게임시작버튼 누른후  카드패 뿌려줌------------------------ 데이터 받음------------처음한번만실행됨
+      socket.on('ViwMycard message', function(data) { //받는거 !!!서버쪽에서 전송된 내용을 받음
+        arrData = data.socketIDnCardnum;
+        var index = arrData.indexOf(socket.id); //키값으로 배열의 위치를 찾아서 index기준을 찾아냄
+        randomValue = data.randomValue; //랜덤값 전체 배열 받기
+        globalBettingV = data.globalBettingV; //플레이어별 베팅 금액
+
+        username=data.user;
+
+
+
+        $('.pcACard1').hide();
+        $('.pcACard2').hide();
+        $('.pcAHands').hide();
+        $('.pcACard3').show();
+        $('.pcAHands2').show();
+
+
+
+
+
+
+
+
+        index++;
+        Value1 = arrData[index]; //첫번째 내가 받아야할 패의 첫번째 번호(카드)
+        index++;
+        Value2 = arrData[index]; //첫번째 내가 받아야할 패의 두번째 번호(카드)
+        //id가 chat태그 하위 내용으로 이내용을 추가한다
+
+
+
+        //왼쪽 내영역 유저이름
+        $('.mLeftDPUN').html(`<div class="mLeftDP_MyUsername"><strong>` + MyUsername + `</strong></div>`);
+
+
+
+        //왼쪽 내 영역 원숭이 얼굴
+        $('.mLeftDPface').html(`<img class="" style="width:80px; margin-left:auto; height:auto; padding-top:59px" src="./img/myM.png" >`);
+
+
+        //돌아오기 이미지
+
+
+        for (var i = 0; i < 4; i++) { // 뒷패를--사이드의 카드상태 실시간으로 뿌리기
+          var tempI = i + 1;
+
+          var parseString = String(tempI);
+
+
+
+          $('#DivCardShow' + parseString).show(); //일단 게임시작 전에는 카드상태 안보이게 해놔야하니깐 hide()
+
+        }
+        //-----이미지 제어를위해 형변환 시켜줌
+
+        parseIntValue1 = parseInt(Value1); //전역변수
+        parseIntValue2 = parseInt(Value2); //전역변수
+
+        $('#myCardBigArea2').hide(); // 게임시작버튼 누르면 사라지게 만듬 같은(위에랑같은말이다)
+        $('#myCardBigArea').show();
+
+        //------------------------------- 카드한장일때 내 카드영역 카드표시부분--------------------------------------------------
+        $('#myCardBigArea').html(`<div class="img_center_myCard"  style="background-image: url(` + parseIntValue1 + `.jpg); "> <img class="img_center_myHand" src="./img/myMH2.png" >`);
+
+
+
+        for (var stack = 0, i = 0; i < 5; i++) { //사이드의 첫번째 카드상태 실시간으로 뿌리기
+          var tempI_card = i + 1;
+          if (stack) {
+            tempI_card -= 1;
+          }
+          var parseString_card = String(tempI_card);
+
+          //
+
+          if (users[i] === undefined) {
+            $('#p' + parseString_card + 'card1').html('' + '');
+          } else if (users[i] === MyUsername) {
+            ++stack;
+            continue;
+          } else {
+            //$('#DivCardShow' + parseString_card).hide(); //일단 게임시작 전에는 카드상태 안보이게 해놔야하니깐 hide()
+
+            $('#pcAHead' + parseString_card).html(`<img width="132px"  height="auto" src="./img/Mface1.png" >`);
+
+            $('#p' + parseString_card + 'card3').html(`<img width="77px"  height="121px" src="CardBack.png" >`);
+
+            $('#pcAHandsO' + parseString_card).html(`<img width="95px"  height="auto" src="./img/pcAHandsO.png" >`);
+
+            //카드백
+
+          } //유저인원의 변경이 있을때 이걸로 초기화됨 설정해두셈
+        } //end of for
+
+
+
+
+
+
+
+
+        for (var stack = 0, i = 0; i < 5; i++) { //사이드의 유저이름 실시간으로 뿌리기
+          var tempI_card = i + 1;
+          if (stack) {
+            tempI_card -= 1;
+          }
+          var parseString_card = String(tempI_card);
+
+          //
+
+          if (users[i] === undefined) {
+            $('#user' + tempI + 'Place').html('<div style="margin-left:15px; margin-top:30px; font-size:15px; color:green;"> <strong> ' + '대기중' + '</strong></div>');
+          } else if (users[i] === MyUsername) {
+            ++stack;
+            continue;
+          } else {
+            //$('#DivCardShow' + parseString_card).hide(); //일단 게임시작 전에는 카드상태 안보이게 해놔야하니깐 hide()
+
+            $('#user' + tempI + 'Place').html(' <div style="margin-left:15px; margin-top:30px; font-size:15px; color:green;"> <strong>' + users[i] + '</strong></div>');
+
+          } //유저인원의 변경이 있을때 이걸로 초기화됨 설정해두셈
+        } //end of for
+
+
+
+
+
+      });
+
+
+
+
+
+
+
+
+
+      //--------------------------메시지 보내기 관련---------------
+      $messageForm.submit(function(e) { // 보내는거 !!!!!!폼에서 메세지 내용을 가져옴
+        e.preventDefault(); //submit후 화면 refresh를 막음 //원래 함수자체기능은 함수의 기능을 막아버리는것
+        socket.emit('send message', $message.val()); //$messageform의 내용을 가져와서 send message를 키값으로 emit함(서버로보냄)
+        $message.val(''); //$message.val()를 초기화
+
+
+      });
+
+      //-----------------------메시지 받고 화면에 출력--------------------
+      socket.on('new message', function(data) { //받는거 !!!서버쪽에서 전송된 내용을 받음
+        $chat.append('<div class="well"><strong>' + data.user +
+          '</strong>: ' + data.msg + '</div>'); //id가 chat태그 하위 내용으로 이내용을 추가한다
+
+        //var divdiv = document.getElementById("chat");
+        //divdiv.scrollTop = divdiv.scrollHeight;
+
+      });
+
+      //-----------------------------------------유저데이터 관련-------------------
+      $userForm.submit(function(e) { //유저정보 보내는거!!
+        e.preventDefault(); //submit후 화면 refresh를 막음 //원래 함수자체기능은 함수의 기능을 막아버리는것
+        socket.emit('new user', $username.val(), function(data) { //new user를 키값으로 보내는데 id가username인 내용을 보냄 이 내용을 data로 콜백하고
+          if (data) { //콜백된 data가 존재한다면(진행이 됐다면)
+            $userFormArea.hide(); //userFormArea를 숨기고
+            $messageArea.show(); //messageArea를 보여준다  봉근씨1
+          }
+        });
+        MyUsername = $username.val();  //봉근씨2 해당 유저아이디를 여기다 연결해주셔야해요
+
+        $username.val('');
+      });
+
+      var userTotalNum = ''; //유저의 수
+
+
+
+
+
+
+      var users = [];
+      //--------------------
+      socket.on('get users', function(data) { //받는거!!!get user를 키값으로 받음 data를 콜백하고
+        var html = '';
+        var UsernamesOutput = [];
+
+        users = data.users;
+
+
+
+
+
+        //게임이 시작 전이라면 실시간으로 상태 변화시킴
+        //하지만 게임시작후라면 유저의 난입을 방지함.
+        if (data.checkGameStart === null) {
+          /*
+          for (i = 0; i < data.users.length; i++) { //받을땐 리스트로 받음그래서 data리스트의 길이반큼 반복
+            html += '<li class="list-group-item">' + data.users[i] + '</li>'; //html의 리스트 추가방식으로 추가 후 html변수에 += 시킴
+            UsernamesOutput[i] += data.users[i];
+
+          }
+          $users.html(html); //id가 user인태그로가서 하위태그내용으로 html내용을 추가한다 이때 변수의 이름이 html일뿐
+          */
+
+
+          for (var stack = 0, i = 0; i < 5; i++) { //사이드에 유저이름 실시간을 뿌리기
+            var tempI = (i + 1);
+            if (stack) {
+              tempI -= 1;
+            }
+            var parseString = String(tempI);
+            //parseInt(Value1);
+
+
+            if (data.users[i] === undefined) {
+              $('#user' + tempI + 'Place').html('<div style="margin-left:15px; margin-top:30px; font-size:15px; color:green;"> <strong> ' + '대기중' + '</strong></div>');
+            } else if (data.users[i] === MyUsername) {
+              ++stack;
+              continue;
+            } else {
+              $('#user' + tempI + 'Place').html(' <div style="margin-left:15px; margin-top:30px; font-size:15px; color:green;"> <strong>' + data.users[i] + '</strong></div>');
+            }
+          } //end of OtherUsername
+
+
+
+        } //end of setFirstDisplay
+
+      });
+
+      function numberWithCommas(x) { //천단위로 콤마찍어주는 함수
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+
+
+
+    });
+  </script>
+</body>
+
+<script type="text/javascript">
+
+function playCall() {
+  var audio = document.getElementById("callSound");
+  audio.play();
+}
+
+function playPing() {
+  var audio = document.getElementById("pingSound");
+  audio.play();
+}
+
+function playHalf() {
+  var audio = document.getElementById("halfSound");
+  audio.play();
+}
+
+
+  function playDie() {
+    var audio = document.getElementById("dieSound");
+    audio.play();
+  }
+
+  function playDouble() {
+    var audio = document.getElementById("doubleSound");
+    audio.play();
+  }
+
+  function playQuarter() {
+    var audio = document.getElementById("quarterSound");
+    audio.play();
+  }
+
+  function playHandout() {
+    var audio = document.getElementById("handoutSound");
+    audio.play();
+  }
+
+  function playHandout() {
+    var audio = document.getElementById("handoutSound2");
+    audio.play();
+  }
+
+  function playHandout() {
+    var audio = document.getElementById("handoutSound3");
+    audio.play();
+  }
+  function playHandout() {
+    var audio = document.getElementById("handoutSound4");
+    audio.play();
+  }
+  function playHandout() {
+    var audio = document.getElementById("handoutSound5");
+    audio.play();
+  }
+
+  function playHandout() {
+    var audio = document.getElementById("handoutSound6");
+    audio.play();
+  }
+
+
+  function playFirstcall() {
+    var audio = document.getElementById("firstcallSound");
+    audio.play();
+  }
+
+
+
+  function playBGM(){  //브금
+    var audio = document.getElementById("mainbgm");
+      audio.volume = 0.2;
+  }
+
+
+
+</script>
+
+</html>
