@@ -12,6 +12,7 @@ https://koreans-style-poker.herokuapp.com/
 
 
 ### 구현 동작
+<iframe width="640" height="360" src="https://www.youtube.com/embed/E817fvDW8d4" frameborder="0" gesture="media" allowfullscreen=""></iframe>
 <img width="1276" alt="1" src="https://user-images.githubusercontent.com/57750190/98424808-50770680-20d6-11eb-9449-6887cccdc5ce.png">
 <img width="1280" alt="2" src="https://user-images.githubusercontent.com/57750190/98424809-51a83380-20d6-11eb-9046-0f9162c1f65b.png">
 <img width="1226" alt="3" src="https://user-images.githubusercontent.com/57750190/98424814-5371f700-20d6-11eb-946d-f8ab5b289132.png">
