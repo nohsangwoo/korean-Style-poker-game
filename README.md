@@ -15,6 +15,8 @@ https://koreans-style-poker.herokuapp.com/
 > 구현 동영상(click)<br/>
 [![Video Label](http://img.youtube.com/vi/E817fvDW8d4/0.jpg)](https://youtu.be/uLR1RNqJ1Mw?t=0s)
 [![Video Label](http://img.youtube.com/vi/hotBySM0k7Y/0.jpg)](https://youtu.be/uLR1RNqJ1Mw?t=0s)
+<br/>
+<br/>
 > 구현 이미지<br/>
 <img width="1276" alt="1" src="https://user-images.githubusercontent.com/57750190/98424808-50770680-20d6-11eb-9449-6887cccdc5ce.png">
 <img width="1280" alt="2" src="https://user-images.githubusercontent.com/57750190/98424809-51a83380-20d6-11eb-9046-0f9162c1f65b.png">
