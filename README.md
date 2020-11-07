@@ -13,8 +13,8 @@ https://koreans-style-poker.herokuapp.com/
 
 ### 구현 동작
 > 구현 동영상(click)<br/>
-[![Video Label](http://img.youtube.com/vi/E817fvDW8d4/0.jpg)](https://youtu.be/uLR1RNqJ1Mw?t=0s)
-[![Video Label](http://img.youtube.com/vi/hotBySM0k7Y/0.jpg)](https://youtu.be/uLR1RNqJ1Mw?t=0s) <br/>
+[![Video Label](http://img.youtube.com/vi/E817fvDW8d4/0.jpg)](https://youtu.be/E817fvDW8d4?t=0s)
+[![Video Label](http://img.youtube.com/vi/hotBySM0k7Y/0.jpg)](https://youtu.be/hotBySM0k7Y?t=0s) <br/>
 
 
 > 구현 이미지
